@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using web_api.Models;
@@ -15,13 +16,9 @@ namespace web_api.Controllers
         [HttpPost]
         public void Post([FromBody] AppPosts dto)
         {
-            System.Diagnostics.Debug.WriteLine("===========================");
-            System.Diagnostics.Debug.WriteLine(dto.Email);
-            for(int i=0; i < dto.Data.Length; i++)
-            {
-                System.Diagnostics.Debug.WriteLine("Text: " + dto.Data[i].Text);
-            }
-            System.Diagnostics.Debug.WriteLine("===========================");
+            PersonalityManager pManager = new PersonalityManager(dto);
+            Thread thr = new Thread(new ThreadStart(pManager.startThread));
+            thr.Start();
         }
     }
 }
